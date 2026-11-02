@@ -9,4 +9,6 @@ import com.fpt.a2thuantran.entity.Category;
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     List<Category> findByCategoryNameContainingIgnoreCase(String keyword);
+
+    List<Category> findByIsActiveTrue();
 }
