@@ -24,4 +24,7 @@ public interface NewsArticleService {
     void deleteNews(Integer newsArticleId);
 
     List<NewsArticleResponse> getNewsHistoryOfAccount(Integer accountId);
+
+    // used by the "create/update news" form to suggest existing tags
+    List<String> getAllTagNames();
 }

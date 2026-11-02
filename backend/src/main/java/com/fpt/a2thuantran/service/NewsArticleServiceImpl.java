@@ -139,6 +139,13 @@ public class NewsArticleServiceImpl implements NewsArticleService {
                 .toList();
     }
 
+    @Override
+    public List<String> getAllTagNames() {
+        return tagRepository.findAll().stream()
+                .map(Tag::getTagName)
+                .toList();
+    }
+
     // find an existing tag by name, or create a new one if it does not exist yet
     private List<Tag> findOrCreateTags(List<String> tagNames) {
         List<Tag> tags = new ArrayList<>();
