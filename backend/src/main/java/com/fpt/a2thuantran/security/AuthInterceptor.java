@@ -36,13 +36,13 @@ public class AuthInterceptor implements HandlerInterceptor {
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new UnauthorizedException("Ban chua dang nhap hoac token bi thieu");
+            throw new UnauthorizedException("Bạn chưa đăng nhập hoặc token bị thiếu");
         }
 
         String token = authorizationHeader.substring("Bearer ".length());
 
         if (!jwtUtil.isTokenValid(token)) {
-            throw new UnauthorizedException("Token khong hop le hoac da het han");
+            throw new UnauthorizedException("Token không hợp lệ hoặc đã hết hạn");
         }
 
         Integer accountId = jwtUtil.getAccountIdFromToken(token);

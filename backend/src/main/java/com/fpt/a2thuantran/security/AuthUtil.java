@@ -26,7 +26,7 @@ public class AuthUtil {
     public static void requireAdminRole(HttpServletRequest request) {
         Integer currentRole = getCurrentAccountRole(request);
         if (currentRole == null || currentRole != SystemAccount.ROLE_ADMIN) {
-            throw new ForbiddenException("Chi Admin moi duoc phep thuc hien chuc nang nay");
+            throw new ForbiddenException("Chỉ Admin mới được phép thực hiện chức năng này");
         }
     }
 
@@ -34,7 +34,7 @@ public class AuthUtil {
     public static void requireStaffRole(HttpServletRequest request) {
         Integer currentRole = getCurrentAccountRole(request);
         if (currentRole == null || currentRole != SystemAccount.ROLE_STAFF) {
-            throw new ForbiddenException("Chi Staff moi duoc phep thuc hien chuc nang nay");
+            throw new ForbiddenException("Chỉ Staff mới được phép thực hiện chức năng này");
         }
     }
 }

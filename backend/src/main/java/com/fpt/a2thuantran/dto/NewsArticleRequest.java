@@ -7,20 +7,20 @@ import jakarta.validation.constraints.NotNull;
 
 public class NewsArticleRequest {
 
-    @NotBlank(message = "Tieu de khong duoc de trong")
+    @NotBlank(message = "Tiêu đề không được để trống")
     private String newsTitle;
 
     private String headline;
 
-    @NotBlank(message = "Noi dung khong duoc de trong")
+    @NotBlank(message = "Nội dung không được để trống")
     private String newsContent;
 
     private String newsSource;
 
-    @NotNull(message = "Danh muc khong duoc de trong")
+    @NotNull(message = "Danh mục không được để trống")
     private Integer categoryId;
 
-    @NotNull(message = "Trang thai khong duoc de trong")
+    @NotNull(message = "Trạng thái không được để trống")
     private Boolean newsStatus;
 
     // list of tag names, for example ["Sport", "Technology"]

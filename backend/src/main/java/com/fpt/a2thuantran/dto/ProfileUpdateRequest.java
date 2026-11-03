@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
  */
 public class ProfileUpdateRequest {
 
-    @NotBlank(message = "Ten tai khoan khong duoc de trong")
+    @NotBlank(message = "Tên tài khoản không được để trống")
     private String accountName;
 
     private String accountPassword;

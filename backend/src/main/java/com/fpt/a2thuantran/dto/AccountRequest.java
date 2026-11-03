@@ -10,17 +10,17 @@ import jakarta.validation.constraints.NotNull;
  */
 public class AccountRequest {
 
-    @NotBlank(message = "Ten tai khoan khong duoc de trong")
+    @NotBlank(message = "Tên tài khoản không được để trống")
     private String accountName;
 
-    @NotBlank(message = "Email khong duoc de trong")
-    @Email(message = "Email khong dung dinh dang")
+    @NotBlank(message = "Email không được để trống")
+    @Email(message = "Email không đúng định dạng")
     private String accountEmail;
 
     // only required when creating a new account, checked manually in the service
     private String accountPassword;
 
-    @NotNull(message = "Vai tro khong duoc de trong")
+    @NotNull(message = "Vai trò không được để trống")
     private Integer accountRole;
 
     public String getAccountName() {

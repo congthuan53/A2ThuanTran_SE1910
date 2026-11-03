@@ -83,7 +83,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         long newsInThisCategory = newsArticleRepository.countByCategory_CategoryId(categoryId);
         if (newsInThisCategory > 0) {
-            throw new BadRequestException("Khong the xoa danh muc nay vi da co bai viet su dung");
+            throw new BadRequestException("Không thể xóa danh mục này vì đã có bài viết sử dụng");
         }
 
         categoryRepository.delete(category);
@@ -91,7 +91,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private Category findCategoryOrThrow(Integer categoryId) {
         return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay danh muc voi id = " + categoryId));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id = " + categoryId));
     }
 
     private CategoryResponse toCategoryResponse(Category category) {

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 public class CategoryRequest {
 
-    @NotBlank(message = "Ten danh muc khong duoc de trong")
+    @NotBlank(message = "Tên danh mục không được để trống")
     private String categoryName;
 
     private String categoryDescription;
@@ -13,7 +13,7 @@ public class CategoryRequest {
     // can be null if this category has no parent
     private Integer parentCategoryId;
 
-    @NotNull(message = "Trang thai khong duoc de trong")
+    @NotNull(message = "Trạng thái không được để trống")
     private Boolean isActive;
 
     public String getCategoryName() {

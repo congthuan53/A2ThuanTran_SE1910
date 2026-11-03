@@ -64,23 +64,23 @@ public class DataSeeder implements CommandLineRunner {
         accountRepository.save(staff);
 
         Category sportCategory = new Category();
-        sportCategory.setCategoryName("The thao");
-        sportCategory.setCategoryDescription("Tin tuc the thao");
+        sportCategory.setCategoryName("Thể thao");
+        sportCategory.setCategoryDescription("Tin tức thể thao");
         sportCategory.setIsActive(true);
         categoryRepository.save(sportCategory);
 
         Category technologyCategory = new Category();
-        technologyCategory.setCategoryName("Cong nghe");
-        technologyCategory.setCategoryDescription("Tin tuc cong nghe");
+        technologyCategory.setCategoryName("Công nghệ");
+        technologyCategory.setCategoryDescription("Tin tức công nghệ");
         technologyCategory.setIsActive(true);
         categoryRepository.save(technologyCategory);
 
         Tag sampleTag = tagRepository.save(new Tag("FPT"));
 
         NewsArticle sampleNews = new NewsArticle();
-        sampleNews.setNewsTitle("Chao mung ban den voi he thong quan ly tin tuc");
-        sampleNews.setHeadline("Bai viet mau");
-        sampleNews.setNewsContent("Day la noi dung bai viet mau duoc tao tu dong khi khoi dong ung dung lan dau.");
+        sampleNews.setNewsTitle("Chào mừng bạn đến với hệ thống quản lý tin tức");
+        sampleNews.setHeadline("Bài viết mẫu");
+        sampleNews.setNewsContent("Đây là nội dung bài viết mẫu được tạo tự động khi khởi động ứng dụng lần đầu.");
         sampleNews.setNewsSource("FU News Management System");
         sampleNews.setCategory(technologyCategory);
         sampleNews.setNewsStatus(true);
@@ -90,7 +90,7 @@ public class DataSeeder implements CommandLineRunner {
         newsArticleRepository.save(sampleNews);
 
         System.out.println("===================================================");
-        System.out.println("Da tao du lieu mau:");
+        System.out.println("Đã tạo dữ liệu mẫu:");
         System.out.println("  Admin : admin@fu.edu.vn / Admin@123");
         System.out.println("  Staff : staff@fu.edu.vn / Staff@123");
         System.out.println("===================================================");

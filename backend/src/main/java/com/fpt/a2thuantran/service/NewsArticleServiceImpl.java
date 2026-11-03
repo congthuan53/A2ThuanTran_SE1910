@@ -59,7 +59,7 @@ public class NewsArticleServiceImpl implements NewsArticleService {
         NewsArticle newsArticle = findNewsOrThrow(newsArticleId);
 
         if (!Boolean.TRUE.equals(newsArticle.getNewsStatus())) {
-            throw new ResourceNotFoundException("Bai viet nay hien khong con hoat dong");
+            throw new ResourceNotFoundException("Bài viết này hiện không còn hoạt động");
         }
 
         return toNewsArticleResponse(newsArticle);
@@ -171,17 +171,17 @@ public class NewsArticleServiceImpl implements NewsArticleService {
 
     private NewsArticle findNewsOrThrow(Integer newsArticleId) {
         return newsArticleRepository.findById(newsArticleId)
-                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay bai viet voi id = " + newsArticleId));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy bài viết với id = " + newsArticleId));
     }
 
     private Category findCategoryOrThrow(Integer categoryId) {
         return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay danh muc voi id = " + categoryId));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy danh mục với id = " + categoryId));
     }
 
     private SystemAccount findAccountOrThrow(Integer accountId) {
         return accountRepository.findById(accountId)
-                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay tai khoan voi id = " + accountId));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản với id = " + accountId));
     }
 
     private NewsArticleResponse toNewsArticleResponse(NewsArticle newsArticle) {

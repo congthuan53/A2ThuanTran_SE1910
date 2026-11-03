@@ -26,11 +26,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse login(LoginRequest request) {
         SystemAccount account = accountRepository.findByAccountEmail(request.getEmail())
-                .orElseThrow(() -> new UnauthorizedException("Email hoac mat khau khong dung"));
+                .orElseThrow(() -> new UnauthorizedException("Email hoặc mật khẩu không đúng"));
 
         boolean passwordMatches = passwordEncoder.matches(request.getPassword(), account.getAccountPassword());
         if (!passwordMatches) {
-            throw new UnauthorizedException("Email hoac mat khau khong dung");
+            throw new UnauthorizedException("Email hoặc mật khẩu không đúng");
         }
 
         String token = jwtUtil.generateToken(account.getAccountId(), account.getAccountRole());

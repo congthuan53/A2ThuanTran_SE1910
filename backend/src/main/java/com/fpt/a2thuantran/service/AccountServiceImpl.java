@@ -55,11 +55,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponse createAccount(AccountRequest request) {
         if (accountRepository.existsByAccountEmail(request.getAccountEmail())) {
-            throw new BadRequestException("Email nay da duoc su dung");
+            throw new BadRequestException("Email này đã được sử dụng");
         }
 
         if (!StringUtils.hasText(request.getAccountPassword())) {
-            throw new BadRequestException("Mat khau khong duoc de trong khi tao tai khoan moi");
+            throw new BadRequestException("Mật khẩu không được để trống khi tạo tài khoản mới");
         }
 
         SystemAccount account = new SystemAccount();
@@ -95,7 +95,7 @@ public class AccountServiceImpl implements AccountService {
 
         long newsCreatedByThisAccount = newsArticleRepository.countByCreatedBy_AccountId(accountId);
         if (newsCreatedByThisAccount > 0) {
-            throw new BadRequestException("Khong the xoa tai khoan nay vi da tao bai viet tin tuc");
+            throw new BadRequestException("Không thể xóa tài khoản này vì đã tạo bài viết tin tức");
         }
 
         accountRepository.delete(account);
@@ -123,7 +123,7 @@ public class AccountServiceImpl implements AccountService {
 
     private SystemAccount findAccountOrThrow(Integer accountId) {
         return accountRepository.findById(accountId)
-                .orElseThrow(() -> new ResourceNotFoundException("Khong tim thay tai khoan voi id = " + accountId));
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy tài khoản với id = " + accountId));
     }
 
     private AccountResponse toAccountResponse(SystemAccount account) {

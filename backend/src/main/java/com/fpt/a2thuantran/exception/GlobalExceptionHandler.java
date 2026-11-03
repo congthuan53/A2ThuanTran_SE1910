@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException exception) {
         FieldError firstError = exception.getBindingResult().getFieldError();
-        String message = firstError != null ? firstError.getDefaultMessage() : "Du lieu khong hop le";
+        String message = firstError != null ? firstError.getDefaultMessage() : "Dữ liệu không hợp lệ";
         ApiError error = new ApiError(HttpStatus.BAD_REQUEST.value(), message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
     // fallback: catch any other unexpected exception so the client always gets JSON back
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiError> handleOtherException(Exception exception) {
-        ApiError error = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Da co loi xay ra: " + exception.getMessage());
+        ApiError error = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Đã có lỗi xảy ra: " + exception.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 }
