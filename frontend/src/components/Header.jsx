@@ -17,26 +17,26 @@ function Header() {
       </Link>
 
       <nav className="navigation-links">
-        <Link to="/">Trang chu</Link>
+        <Link to="/">Trang chủ</Link>
 
-        {isAdmin && <Link to="/admin/accounts">Quan ly tai khoan</Link>}
+        {isAdmin && <Link to="/admin/accounts">Quản lý tài khoản</Link>}
 
         {isStaff && (
           <>
-            <Link to="/staff/categories">Danh muc</Link>
-            <Link to="/staff/news">Quan ly tin tuc</Link>
-            <Link to="/staff/news-history">Lich su dang tin</Link>
-            <Link to="/staff/profile">Ho so cua toi</Link>
+            <Link to="/staff/categories">Danh mục</Link>
+            <Link to="/staff/news">Quản lý tin tức</Link>
+            <Link to="/staff/news-history">Lịch sử đăng tin</Link>
+            <Link to="/staff/profile">Hồ sơ của tôi</Link>
           </>
         )}
 
         {currentUser === null ? (
-          <Link to="/login">Dang nhap</Link>
+          <Link to="/login">Đăng nhập</Link>
         ) : (
           <>
-            <span>Xin chao, {currentUser.accountName}</span>
+            <span>Xin chào, {currentUser.accountName}</span>
             <button type="button" onClick={handleLogoutClick}>
-              Dang xuat
+              Đăng xuất
             </button>
           </>
         )}

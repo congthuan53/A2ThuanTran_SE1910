@@ -31,13 +31,13 @@ function StaffProfilePage() {
         accountName: accountName,
         accountPassword: newPassword,
       });
-      setSuccessMessage("Cap nhat ho so thanh cong");
+      setSuccessMessage("Cập nhật hồ sơ thành công");
       setNewPassword("");
     } catch (error) {
       const message =
         error.response && error.response.data && error.response.data.message
           ? error.response.data.message
-          : "Cap nhat ho so that bai";
+          : "Cập nhật hồ sơ thất bại";
       setErrorMessage(message);
     } finally {
       setIsSaving(false);
@@ -45,12 +45,12 @@ function StaffProfilePage() {
   }
 
   if (isLoading) {
-    return <p className="loading-text">Dang tai...</p>;
+    return <p className="loading-text">Đang tải...</p>;
   }
 
   return (
     <div className="page-container">
-      <h1>Ho so cua toi</h1>
+      <h1>Hồ sơ của tôi</h1>
 
       <div className="white-box" style={{ maxWidth: 480 }}>
         {errorMessage && <div className="error-message">{errorMessage}</div>}
@@ -58,12 +58,12 @@ function StaffProfilePage() {
 
         <form onSubmit={handleSubmit}>
           <div className="form-field">
-            <label htmlFor="accountEmail">Email (khong the thay doi)</label>
+            <label htmlFor="accountEmail">Email (không thể thay đổi)</label>
             <input id="accountEmail" type="email" value={accountEmail} disabled />
           </div>
 
           <div className="form-field">
-            <label htmlFor="accountName">Ten tai khoan</label>
+            <label htmlFor="accountName">Tên tài khoản</label>
             <input
               id="accountName"
               type="text"
@@ -74,7 +74,7 @@ function StaffProfilePage() {
           </div>
 
           <div className="form-field">
-            <label htmlFor="newPassword">Mat khau moi (de trong neu khong doi)</label>
+            <label htmlFor="newPassword">Mật khẩu mới (để trống nếu không đổi)</label>
             <input
               id="newPassword"
               type="password"
@@ -84,7 +84,7 @@ function StaffProfilePage() {
           </div>
 
           <button type="submit" className="button button-primary" disabled={isSaving}>
-            {isSaving ? "Dang luu..." : "Luu thay doi"}
+            {isSaving ? "Đang lưu..." : "Lưu thay đổi"}
           </button>
         </form>
       </div>

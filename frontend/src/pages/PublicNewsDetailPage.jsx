@@ -11,30 +11,30 @@ function PublicNewsDetailPage() {
     newsApi
       .getActiveNewsDetailForPublic(newsArticleId)
       .then(setNews)
-      .catch(() => setErrorMessage("Khong tim thay bai viet nay"));
+      .catch(() => setErrorMessage("Không tìm thấy bài viết này"));
   }, [newsArticleId]);
 
   if (errorMessage) {
     return (
       <div className="page-container">
         <div className="error-message">{errorMessage}</div>
-        <Link to="/">Quay lai trang chu</Link>
+        <Link to="/">Quay lại trang chủ</Link>
       </div>
     );
   }
 
   if (news === null) {
-    return <p className="loading-text">Dang tai...</p>;
+    return <p className="loading-text">Đang tải...</p>;
   }
 
   return (
     <div className="page-container">
-      <Link to="/">&larr; Quay lai danh sach</Link>
+      <Link to="/">&larr; Quay lại danh sách</Link>
 
       <div className="white-box" style={{ marginTop: 14 }}>
         <h1>{news.newsTitle}</h1>
         <div className="news-meta">
-          Danh muc: {news.categoryName} | Tac gia: {news.createdByName} | Ngay dang:{" "}
+          Danh mục: {news.categoryName} | Tác giả: {news.createdByName} | Ngày đăng:{" "}
           {new Date(news.createdDate).toLocaleDateString("vi-VN")}
         </div>
 
@@ -54,7 +54,7 @@ function PublicNewsDetailPage() {
 
         <p style={{ whiteSpace: "pre-line" }}>{news.newsContent}</p>
 
-        {news.newsSource && <p>Nguon: {news.newsSource}</p>}
+        {news.newsSource && <p>Nguồn: {news.newsSource}</p>}
       </div>
     </div>
   );

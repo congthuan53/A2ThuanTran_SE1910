@@ -15,21 +15,21 @@ function StaffNewsHistoryPage() {
 
   return (
     <div className="page-container">
-      <h1>Lich su dang tin</h1>
+      <h1>Lịch sử đăng tin</h1>
 
       <div className="white-box">
         {isLoading ? (
-          <p className="loading-text">Dang tai...</p>
+          <p className="loading-text">Đang tải...</p>
         ) : newsList.length === 0 ? (
-          <p>Ban chua dang bai viet nao.</p>
+          <p>Bạn chưa đăng bài viết nào.</p>
         ) : (
           <table className="data-table">
             <thead>
               <tr>
-                <th>Tieu de</th>
-                <th>Danh muc</th>
-                <th>Ngay dang</th>
-                <th>Trang thai</th>
+                <th>Tiêu đề</th>
+                <th>Danh mục</th>
+                <th>Ngày đăng</th>
+                <th>Trạng thái</th>
               </tr>
             </thead>
             <tbody>
@@ -44,7 +44,7 @@ function StaffNewsHistoryPage() {
                         news.newsStatus ? "status-badge-active" : "status-badge-inactive"
                       }`}
                     >
-                      {news.newsStatus ? "Hoat dong" : "Ngung hoat dong"}
+                      {news.newsStatus ? "Hoạt động" : "Ngừng hoạt động"}
                     </span>
                   </td>
                 </tr>

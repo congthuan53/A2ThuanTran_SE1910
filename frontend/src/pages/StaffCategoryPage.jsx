@@ -90,7 +90,7 @@ function StaffCategoryPage() {
       const message =
         error.response && error.response.data && error.response.data.message
           ? error.response.data.message
-          : "Luu danh muc that bai";
+          : "Lưu danh mục thất bại";
       setFormErrorMessage(message);
     } finally {
       setIsSaving(false);
@@ -108,7 +108,7 @@ function StaffCategoryPage() {
       const message =
         error.response && error.response.data && error.response.data.message
           ? error.response.data.message
-          : "Xoa danh muc that bai";
+          : "Xóa danh mục thất bại";
       setListErrorMessage(message);
       setDeleteTargetId(null);
     }
@@ -116,7 +116,7 @@ function StaffCategoryPage() {
 
   return (
     <div className="page-container">
-      <h1>Quan ly danh muc</h1>
+      <h1>Quản lý danh mục</h1>
 
       {listErrorMessage && <div className="error-message">{listErrorMessage}</div>}
 
@@ -124,7 +124,7 @@ function StaffCategoryPage() {
         <div className="search-box">
           <input
             type="text"
-            placeholder="Tim theo ten danh muc..."
+            placeholder="Tìm theo tên danh mục..."
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
           />
@@ -132,25 +132,25 @@ function StaffCategoryPage() {
 
         <div style={{ display: "flex", gap: 10 }}>
           <button type="submit" className="button button-secondary">
-            Tim kiem
+            Tìm kiếm
           </button>
           <button type="button" className="button button-primary" onClick={openCreateModal}>
-            + Them danh muc
+            + Thêm danh mục
           </button>
         </div>
       </form>
 
       <div className="white-box">
         {isLoading ? (
-          <p className="loading-text">Dang tai...</p>
+          <p className="loading-text">Đang tải...</p>
         ) : (
           <table className="data-table">
             <thead>
               <tr>
-                <th>Ten danh muc</th>
-                <th>Mo ta</th>
-                <th>Trang thai</th>
-                <th>Hanh dong</th>
+                <th>Tên danh mục</th>
+                <th>Mô tả</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
               </tr>
             </thead>
             <tbody>
@@ -164,7 +164,7 @@ function StaffCategoryPage() {
                         category.isActive ? "status-badge-active" : "status-badge-inactive"
                       }`}
                     >
-                      {category.isActive ? "Hoat dong" : "Ngung hoat dong"}
+                      {category.isActive ? "Hoạt động" : "Ngừng hoạt động"}
                     </span>
                   </td>
                   <td className="action-buttons">
@@ -173,14 +173,14 @@ function StaffCategoryPage() {
                       className="button button-secondary"
                       onClick={() => openEditModal(category)}
                     >
-                      Sua
+                      Sửa
                     </button>
                     <button
                       type="button"
                       className="button button-danger"
                       onClick={() => setDeleteTargetId(category.categoryId)}
                     >
-                      Xoa
+                      Xóa
                     </button>
                   </td>
                 </tr>
@@ -192,14 +192,14 @@ function StaffCategoryPage() {
 
       {editingCategory !== null && (
         <Modal
-          title={editingCategory.categoryId ? "Sua danh muc" : "Them danh muc moi"}
+          title={editingCategory.categoryId ? "Sửa danh mục" : "Thêm danh mục mới"}
           onClose={closeModal}
         >
           {formErrorMessage && <div className="error-message">{formErrorMessage}</div>}
 
           <form onSubmit={handleFormSubmit}>
             <div className="form-field">
-              <label htmlFor="categoryName">Ten danh muc</label>
+              <label htmlFor="categoryName">Tên danh mục</label>
               <input
                 id="categoryName"
                 type="text"
@@ -210,7 +210,7 @@ function StaffCategoryPage() {
             </div>
 
             <div className="form-field">
-              <label htmlFor="categoryDescription">Mo ta</label>
+              <label htmlFor="categoryDescription">Mô tả</label>
               <textarea
                 id="categoryDescription"
                 value={formData.categoryDescription}
@@ -221,23 +221,23 @@ function StaffCategoryPage() {
             </div>
 
             <div className="form-field">
-              <label htmlFor="isActive">Trang thai</label>
+              <label htmlFor="isActive">Trạng thái</label>
               <select
                 id="isActive"
                 value={formData.isActive}
                 onChange={(event) => handleFormFieldChange("isActive", event.target.value)}
               >
-                <option value="true">Hoat dong</option>
-                <option value="false">Ngung hoat dong</option>
+                <option value="true">Hoạt động</option>
+                <option value="false">Ngừng hoạt động</option>
               </select>
             </div>
 
             <div className="modal-footer">
               <button type="button" className="button button-secondary" onClick={closeModal}>
-                Huy
+                Hủy
               </button>
               <button type="submit" className="button button-primary" disabled={isSaving}>
-                {isSaving ? "Dang luu..." : "Luu"}
+                {isSaving ? "Đang lưu..." : "Lưu"}
               </button>
             </div>
           </form>
@@ -246,7 +246,7 @@ function StaffCategoryPage() {
 
       {deleteTargetId !== null && (
         <ConfirmDialog
-          message="Ban co chac muon xoa danh muc nay?"
+          message="Bạn có chắc muốn xóa danh mục này?"
           onConfirm={handleConfirmDelete}
           onCancel={() => setDeleteTargetId(null)}
         />

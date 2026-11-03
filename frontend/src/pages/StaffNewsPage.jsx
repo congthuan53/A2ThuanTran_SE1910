@@ -113,7 +113,7 @@ function StaffNewsPage() {
       const message =
         error.response && error.response.data && error.response.data.message
           ? error.response.data.message
-          : "Luu bai viet that bai";
+          : "Lưu bài viết thất bại";
       setFormErrorMessage(message);
     } finally {
       setIsSaving(false);
@@ -131,7 +131,7 @@ function StaffNewsPage() {
       const message =
         error.response && error.response.data && error.response.data.message
           ? error.response.data.message
-          : "Xoa bai viet that bai";
+          : "Xóa bài viết thất bại";
       setListErrorMessage(message);
       setDeleteTargetId(null);
     }
@@ -139,7 +139,7 @@ function StaffNewsPage() {
 
   return (
     <div className="page-container">
-      <h1>Quan ly tin tuc</h1>
+      <h1>Quản lý tin tức</h1>
 
       {listErrorMessage && <div className="error-message">{listErrorMessage}</div>}
 
@@ -147,7 +147,7 @@ function StaffNewsPage() {
         <div className="search-box">
           <input
             type="text"
-            placeholder="Tim theo tieu de..."
+            placeholder="Tìm theo tiêu đề..."
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
           />
@@ -155,26 +155,26 @@ function StaffNewsPage() {
 
         <div style={{ display: "flex", gap: 10 }}>
           <button type="submit" className="button button-secondary">
-            Tim kiem
+            Tìm kiếm
           </button>
           <button type="button" className="button button-primary" onClick={openCreateModal}>
-            + Them bai viet
+            + Thêm bài viết
           </button>
         </div>
       </form>
 
       <div className="white-box">
         {isLoading ? (
-          <p className="loading-text">Dang tai...</p>
+          <p className="loading-text">Đang tải...</p>
         ) : (
           <table className="data-table">
             <thead>
               <tr>
-                <th>Tieu de</th>
-                <th>Danh muc</th>
-                <th>Nguoi tao</th>
-                <th>Trang thai</th>
-                <th>Hanh dong</th>
+                <th>Tiêu đề</th>
+                <th>Danh mục</th>
+                <th>Người tạo</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
               </tr>
             </thead>
             <tbody>
@@ -189,7 +189,7 @@ function StaffNewsPage() {
                         news.newsStatus ? "status-badge-active" : "status-badge-inactive"
                       }`}
                     >
-                      {news.newsStatus ? "Hoat dong" : "Ngung hoat dong"}
+                      {news.newsStatus ? "Hoạt động" : "Ngừng hoạt động"}
                     </span>
                   </td>
                   <td className="action-buttons">
@@ -198,14 +198,14 @@ function StaffNewsPage() {
                       className="button button-secondary"
                       onClick={() => openEditModal(news)}
                     >
-                      Sua
+                      Sửa
                     </button>
                     <button
                       type="button"
                       className="button button-danger"
                       onClick={() => setDeleteTargetId(news.newsArticleId)}
                     >
-                      Xoa
+                      Xóa
                     </button>
                   </td>
                 </tr>
@@ -217,14 +217,14 @@ function StaffNewsPage() {
 
       {editingNews !== null && (
         <Modal
-          title={editingNews.newsArticleId ? "Sua bai viet" : "Them bai viet moi"}
+          title={editingNews.newsArticleId ? "Sửa bài viết" : "Thêm bài viết mới"}
           onClose={closeModal}
         >
           {formErrorMessage && <div className="error-message">{formErrorMessage}</div>}
 
           <form onSubmit={handleFormSubmit}>
             <div className="form-field">
-              <label htmlFor="newsTitle">Tieu de</label>
+              <label htmlFor="newsTitle">Tiêu đề</label>
               <input
                 id="newsTitle"
                 type="text"
@@ -235,7 +235,7 @@ function StaffNewsPage() {
             </div>
 
             <div className="form-field">
-              <label htmlFor="headline">Tom tat (headline)</label>
+              <label htmlFor="headline">Tóm tắt (headline)</label>
               <input
                 id="headline"
                 type="text"
@@ -245,7 +245,7 @@ function StaffNewsPage() {
             </div>
 
             <div className="form-field">
-              <label htmlFor="newsContent">Noi dung</label>
+              <label htmlFor="newsContent">Nội dung</label>
               <textarea
                 id="newsContent"
                 value={formData.newsContent}
@@ -255,7 +255,7 @@ function StaffNewsPage() {
             </div>
 
             <div className="form-field">
-              <label htmlFor="newsSource">Nguon tin</label>
+              <label htmlFor="newsSource">Nguồn tin</label>
               <input
                 id="newsSource"
                 type="text"
@@ -265,14 +265,14 @@ function StaffNewsPage() {
             </div>
 
             <div className="form-field">
-              <label htmlFor="categoryId">Danh muc</label>
+              <label htmlFor="categoryId">Danh mục</label>
               <select
                 id="categoryId"
                 value={formData.categoryId}
                 onChange={(event) => handleFormFieldChange("categoryId", event.target.value)}
                 required
               >
-                <option value="">-- Chon danh muc --</option>
+                <option value="">-- Chọn danh mục --</option>
                 {categories.map((category) => (
                   <option key={category.categoryId} value={category.categoryId}>
                     {category.categoryName}
@@ -282,24 +282,24 @@ function StaffNewsPage() {
             </div>
 
             <div className="form-field">
-              <label htmlFor="newsStatus">Trang thai</label>
+              <label htmlFor="newsStatus">Trạng thái</label>
               <select
                 id="newsStatus"
                 value={formData.newsStatus}
                 onChange={(event) => handleFormFieldChange("newsStatus", event.target.value)}
               >
-                <option value="true">Hoat dong (hien thi cong khai)</option>
-                <option value="false">Ngung hoat dong</option>
+                <option value="true">Hoạt động (hiển thị công khai)</option>
+                <option value="false">Ngừng hoạt động</option>
               </select>
             </div>
 
             <div className="form-field">
-              <label htmlFor="tagNamesText">Tag (cach nhau boi dau phay)</label>
+              <label htmlFor="tagNamesText">Tag (cách nhau bởi dấu phẩy)</label>
               <input
                 id="tagNamesText"
                 type="text"
                 list="existing-tag-names"
-                placeholder="Vi du: The thao, Bong da"
+                placeholder="Ví dụ: Thể thao, Bóng đá"
                 value={formData.tagNamesText}
                 onChange={(event) => handleFormFieldChange("tagNamesText", event.target.value)}
               />
@@ -312,10 +312,10 @@ function StaffNewsPage() {
 
             <div className="modal-footer">
               <button type="button" className="button button-secondary" onClick={closeModal}>
-                Huy
+                Hủy
               </button>
               <button type="submit" className="button button-primary" disabled={isSaving}>
-                {isSaving ? "Dang luu..." : "Luu"}
+                {isSaving ? "Đang lưu..." : "Lưu"}
               </button>
             </div>
           </form>
@@ -324,7 +324,7 @@ function StaffNewsPage() {
 
       {deleteTargetId !== null && (
         <ConfirmDialog
-          message="Ban co chac muon xoa bai viet nay?"
+          message="Bạn có chắc muốn xóa bài viết này?"
           onConfirm={handleConfirmDelete}
           onCancel={() => setDeleteTargetId(null)}
         />

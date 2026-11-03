@@ -37,13 +37,13 @@ function PublicNewsListPage() {
 
   return (
     <div className="page-container">
-      <h1>Tin tuc</h1>
+      <h1>Tin tức</h1>
 
       <form onSubmit={handleSearchSubmit} className="toolbar-row">
         <div className="search-box">
           <input
             type="text"
-            placeholder="Tim theo tieu de..."
+            placeholder="Tìm theo tiêu đề..."
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
           />
@@ -53,7 +53,7 @@ function PublicNewsListPage() {
           value={selectedCategoryId}
           onChange={(event) => setSelectedCategoryId(event.target.value)}
         >
-          <option value="">Tat ca danh muc</option>
+          <option value="">Tất cả danh mục</option>
           {categories.map((category) => (
             <option key={category.categoryId} value={category.categoryId}>
               {category.categoryName}
@@ -62,13 +62,13 @@ function PublicNewsListPage() {
         </select>
 
         <button type="submit" className="button button-primary">
-          Tim kiem
+          Tìm kiếm
         </button>
       </form>
 
-      {isLoading && <p className="loading-text">Dang tai...</p>}
+      {isLoading && <p className="loading-text">Đang tải...</p>}
 
-      {!isLoading && newsList.length === 0 && <p>Khong co bai viet nao.</p>}
+      {!isLoading && newsList.length === 0 && <p>Không có bài viết nào.</p>}
 
       {newsList.map((news) => (
         <div key={news.newsArticleId} className="news-card">
@@ -76,7 +76,7 @@ function PublicNewsListPage() {
             <Link to={`/news/${news.newsArticleId}`}>{news.newsTitle}</Link>
           </h3>
           <div className="news-meta">
-            Danh muc: {news.categoryName} | Ngay dang:{" "}
+            Danh mục: {news.categoryName} | Ngày đăng:{" "}
             {new Date(news.createdDate).toLocaleDateString("vi-VN")}
           </div>
           <p>{news.headline}</p>

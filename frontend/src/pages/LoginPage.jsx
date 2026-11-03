@@ -29,7 +29,7 @@ function LoginPage() {
       const message =
         error.response && error.response.data && error.response.data.message
           ? error.response.data.message
-          : "Dang nhap that bai, vui long thu lai";
+          : "Đăng nhập thất bại, vui lòng thử lại";
       setErrorMessage(message);
     } finally {
       setIsSubmitting(false);
@@ -39,7 +39,7 @@ function LoginPage() {
   return (
     <div className="login-page-wrapper">
       <div className="login-form-box">
-        <h1>Dang nhap</h1>
+        <h1>Đăng nhập</h1>
 
         {errorMessage && <div className="error-message">{errorMessage}</div>}
 
@@ -56,7 +56,7 @@ function LoginPage() {
           </div>
 
           <div className="form-field">
-            <label htmlFor="password">Mat khau</label>
+            <label htmlFor="password">Mật khẩu</label>
             <input
               id="password"
               type="password"
@@ -67,7 +67,7 @@ function LoginPage() {
           </div>
 
           <button type="submit" className="button button-primary" disabled={isSubmitting} style={{ width: "100%" }}>
-            {isSubmitting ? "Dang dang nhap..." : "Dang nhap"}
+            {isSubmitting ? "Đang đăng nhập..." : "Đăng nhập"}
           </button>
         </form>
       </div>

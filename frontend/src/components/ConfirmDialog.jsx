@@ -1,5 +1,5 @@
 // Confirmation popup shown before a delete action.
-// Usage: <ConfirmDialog message="Xoa tai khoan nay?" onConfirm={doDelete} onCancel={closeDialog} />
+// Usage: <ConfirmDialog message="Xóa tài khoản này?" onConfirm={doDelete} onCancel={closeDialog} />
 function ConfirmDialog({ message, onConfirm, onCancel }) {
   return (
     <div className="modal-overlay" onClick={onCancel}>
@@ -7,10 +7,10 @@ function ConfirmDialog({ message, onConfirm, onCancel }) {
         <p>{message}</p>
         <div className="modal-footer">
           <button type="button" className="button button-secondary" onClick={onCancel}>
-            Huy
+            Hủy
           </button>
           <button type="button" className="button button-danger" onClick={onConfirm}>
-            Xoa
+            Xóa
           </button>
         </div>
       </div>

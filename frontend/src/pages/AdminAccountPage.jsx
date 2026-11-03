@@ -94,7 +94,7 @@ function AdminAccountPage() {
       const message =
         error.response && error.response.data && error.response.data.message
           ? error.response.data.message
-          : "Luu tai khoan that bai";
+          : "Lưu tài khoản thất bại";
       setFormErrorMessage(message);
     } finally {
       setIsSaving(false);
@@ -112,7 +112,7 @@ function AdminAccountPage() {
       const message =
         error.response && error.response.data && error.response.data.message
           ? error.response.data.message
-          : "Xoa tai khoan that bai";
+          : "Xóa tài khoản thất bại";
       setListErrorMessage(message);
       setDeleteTargetId(null);
     }
@@ -120,7 +120,7 @@ function AdminAccountPage() {
 
   return (
     <div className="page-container">
-      <h1>Quan ly tai khoan</h1>
+      <h1>Quản lý tài khoản</h1>
 
       {listErrorMessage && <div className="error-message">{listErrorMessage}</div>}
 
@@ -128,7 +128,7 @@ function AdminAccountPage() {
         <div className="search-box">
           <input
             type="text"
-            placeholder="Tim theo ten hoac email..."
+            placeholder="Tìm theo tên hoặc email..."
             value={keyword}
             onChange={(event) => setKeyword(event.target.value)}
           />
@@ -136,25 +136,25 @@ function AdminAccountPage() {
 
         <div style={{ display: "flex", gap: 10 }}>
           <button type="submit" className="button button-secondary">
-            Tim kiem
+            Tìm kiếm
           </button>
           <button type="button" className="button button-primary" onClick={openCreateModal}>
-            + Them tai khoan
+            + Thêm tài khoản
           </button>
         </div>
       </form>
 
       <div className="white-box">
         {isLoading ? (
-          <p className="loading-text">Dang tai...</p>
+          <p className="loading-text">Đang tải...</p>
         ) : (
           <table className="data-table">
             <thead>
               <tr>
-                <th>Ten</th>
+                <th>Tên</th>
                 <th>Email</th>
-                <th>Vai tro</th>
-                <th>Hanh dong</th>
+                <th>Vai trò</th>
+                <th>Hành động</th>
               </tr>
             </thead>
             <tbody>
@@ -169,14 +169,14 @@ function AdminAccountPage() {
                       className="button button-secondary"
                       onClick={() => openEditModal(account)}
                     >
-                      Sua
+                      Sửa
                     </button>
                     <button
                       type="button"
                       className="button button-danger"
                       onClick={() => setDeleteTargetId(account.accountId)}
                     >
-                      Xoa
+                      Xóa
                     </button>
                   </td>
                 </tr>
@@ -188,14 +188,14 @@ function AdminAccountPage() {
 
       {editingAccount !== null && (
         <Modal
-          title={editingAccount.accountId ? "Sua tai khoan" : "Them tai khoan moi"}
+          title={editingAccount.accountId ? "Sửa tài khoản" : "Thêm tài khoản mới"}
           onClose={closeModal}
         >
           {formErrorMessage && <div className="error-message">{formErrorMessage}</div>}
 
           <form onSubmit={handleFormSubmit}>
             <div className="form-field">
-              <label htmlFor="accountName">Ten tai khoan</label>
+              <label htmlFor="accountName">Tên tài khoản</label>
               <input
                 id="accountName"
                 type="text"
@@ -218,7 +218,7 @@ function AdminAccountPage() {
 
             <div className="form-field">
               <label htmlFor="accountPassword">
-                Mat khau {editingAccount.accountId && "(de trong neu khong doi)"}
+                Mật khẩu {editingAccount.accountId && "(để trống nếu không đổi)"}
               </label>
               <input
                 id="accountPassword"
@@ -229,7 +229,7 @@ function AdminAccountPage() {
             </div>
 
             <div className="form-field">
-              <label htmlFor="accountRole">Vai tro</label>
+              <label htmlFor="accountRole">Vai trò</label>
               <select
                 id="accountRole"
                 value={formData.accountRole}
@@ -242,10 +242,10 @@ function AdminAccountPage() {
 
             <div className="modal-footer">
               <button type="button" className="button button-secondary" onClick={closeModal}>
-                Huy
+                Hủy
               </button>
               <button type="submit" className="button button-primary" disabled={isSaving}>
-                {isSaving ? "Dang luu..." : "Luu"}
+                {isSaving ? "Đang lưu..." : "Lưu"}
               </button>
             </div>
           </form>
@@ -254,7 +254,7 @@ function AdminAccountPage() {
 
       {deleteTargetId !== null && (
         <ConfirmDialog
-          message="Ban co chac muon xoa tai khoan nay?"
+          message="Bạn có chắc muốn xóa tài khoản này?"
           onConfirm={handleConfirmDelete}
           onCancel={() => setDeleteTargetId(null)}
         />
