@@ -1,0 +1,336 @@
+import { useEffect, useState } from "react";
+import * as newsApi from "../api/newsApi";
+import * as categoryApi from "../api/categoryApi";
+import Modal from "../components/Modal";
+import ConfirmDialog from "../components/ConfirmDialog";
+
+const EMPTY_FORM_DATA = {
+  newsTitle: "",
+  headline: "",
+  newsContent: "",
+  newsSource: "",
+  categoryId: "",
+  newsStatus: true,
+  tagNamesText: "",
+};
+
+// turn "Sport, Technology" into ["Sport", "Technology"]
+function splitTagNamesText(tagNamesText) {
+  return tagNamesText
+    .split(",")
+    .map((tagName) => tagName.trim())
+    .filter((tagName) => tagName.length > 0);
+}
+
+function StaffNewsPage() {
+  const [newsList, setNewsList] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [existingTagNames, setExistingTagNames] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [editingNews, setEditingNews] = useState(null);
+  const [formData, setFormData] = useState(EMPTY_FORM_DATA);
+  const [formErrorMessage, setFormErrorMessage] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+
+  const [deleteTargetId, setDeleteTargetId] = useState(null);
+  const [listErrorMessage, setListErrorMessage] = useState("");
+
+  useEffect(() => {
+    loadNews();
+    categoryApi.getAllCategories().then(setCategories);
+    newsApi.getAllTagNames().then(setExistingTagNames);
+  }, []);
+
+  function loadNews() {
+    setIsLoading(true);
+    newsApi
+      .getAllNewsForStaff(keyword)
+      .then(setNewsList)
+      .finally(() => setIsLoading(false));
+  }
+
+  function handleSearchSubmit(event) {
+    event.preventDefault();
+    loadNews();
+  }
+
+  function openCreateModal() {
+    setEditingNews({});
+    setFormData(EMPTY_FORM_DATA);
+    setFormErrorMessage("");
+  }
+
+  function openEditModal(news) {
+    setEditingNews(news);
+    setFormData({
+      newsTitle: news.newsTitle,
+      headline: news.headline || "",
+      newsContent: news.newsContent || "",
+      newsSource: news.newsSource || "",
+      categoryId: news.categoryId,
+      newsStatus: news.newsStatus,
+      tagNamesText: news.tagNames.join(", "),
+    });
+    setFormErrorMessage("");
+  }
+
+  function closeModal() {
+    setEditingNews(null);
+  }
+
+  function handleFormFieldChange(fieldName, value) {
+    setFormData((previousData) => ({ ...previousData, [fieldName]: value }));
+  }
+
+  async function handleFormSubmit(event) {
+    event.preventDefault();
+    setFormErrorMessage("");
+    setIsSaving(true);
+
+    const requestData = {
+      newsTitle: formData.newsTitle,
+      headline: formData.headline,
+      newsContent: formData.newsContent,
+      newsSource: formData.newsSource,
+      categoryId: Number(formData.categoryId),
+      newsStatus: formData.newsStatus === true || formData.newsStatus === "true",
+      tagNames: splitTagNamesText(formData.tagNamesText),
+    };
+
+    try {
+      if (editingNews.newsArticleId) {
+        await newsApi.updateNews(editingNews.newsArticleId, requestData);
+      } else {
+        await newsApi.createNews(requestData);
+      }
+
+      closeModal();
+      loadNews();
+      newsApi.getAllTagNames().then(setExistingTagNames);
+    } catch (error) {
+      const message =
+        error.response && error.response.data && error.response.data.message
+          ? error.response.data.message
+          : "Luu bai viet that bai";
+      setFormErrorMessage(message);
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  async function handleConfirmDelete() {
+    setListErrorMessage("");
+
+    try {
+      await newsApi.deleteNews(deleteTargetId);
+      setDeleteTargetId(null);
+      loadNews();
+    } catch (error) {
+      const message =
+        error.response && error.response.data && error.response.data.message
+          ? error.response.data.message
+          : "Xoa bai viet that bai";
+      setListErrorMessage(message);
+      setDeleteTargetId(null);
+    }
+  }
+
+  return (
+    <div className="page-container">
+      <h1>Quan ly tin tuc</h1>
+
+      {listErrorMessage && <div className="error-message">{listErrorMessage}</div>}
+
+      <form onSubmit={handleSearchSubmit} className="toolbar-row">
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder="Tim theo tieu de..."
+            value={keyword}
+            onChange={(event) => setKeyword(event.target.value)}
+          />
+        </div>
+
+        <div style={{ display: "flex", gap: 10 }}>
+          <button type="submit" className="button button-secondary">
+            Tim kiem
+          </button>
+          <button type="button" className="button button-primary" onClick={openCreateModal}>
+            + Them bai viet
+          </button>
+        </div>
+      </form>
+
+      <div className="white-box">
+        {isLoading ? (
+          <p className="loading-text">Dang tai...</p>
+        ) : (
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Tieu de</th>
+                <th>Danh muc</th>
+                <th>Nguoi tao</th>
+                <th>Trang thai</th>
+                <th>Hanh dong</th>
+              </tr>
+            </thead>
+            <tbody>
+              {newsList.map((news) => (
+                <tr key={news.newsArticleId}>
+                  <td>{news.newsTitle}</td>
+                  <td>{news.categoryName}</td>
+                  <td>{news.createdByName}</td>
+                  <td>
+                    <span
+                      className={`status-badge ${
+                        news.newsStatus ? "status-badge-active" : "status-badge-inactive"
+                      }`}
+                    >
+                      {news.newsStatus ? "Hoat dong" : "Ngung hoat dong"}
+                    </span>
+                  </td>
+                  <td className="action-buttons">
+                    <button
+                      type="button"
+                      className="button button-secondary"
+                      onClick={() => openEditModal(news)}
+                    >
+                      Sua
+                    </button>
+                    <button
+                      type="button"
+                      className="button button-danger"
+                      onClick={() => setDeleteTargetId(news.newsArticleId)}
+                    >
+                      Xoa
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {editingNews !== null && (
+        <Modal
+          title={editingNews.newsArticleId ? "Sua bai viet" : "Them bai viet moi"}
+          onClose={closeModal}
+        >
+          {formErrorMessage && <div className="error-message">{formErrorMessage}</div>}
+
+          <form onSubmit={handleFormSubmit}>
+            <div className="form-field">
+              <label htmlFor="newsTitle">Tieu de</label>
+              <input
+                id="newsTitle"
+                type="text"
+                value={formData.newsTitle}
+                onChange={(event) => handleFormFieldChange("newsTitle", event.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-field">
+              <label htmlFor="headline">Tom tat (headline)</label>
+              <input
+                id="headline"
+                type="text"
+                value={formData.headline}
+                onChange={(event) => handleFormFieldChange("headline", event.target.value)}
+              />
+            </div>
+
+            <div className="form-field">
+              <label htmlFor="newsContent">Noi dung</label>
+              <textarea
+                id="newsContent"
+                value={formData.newsContent}
+                onChange={(event) => handleFormFieldChange("newsContent", event.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-field">
+              <label htmlFor="newsSource">Nguon tin</label>
+              <input
+                id="newsSource"
+                type="text"
+                value={formData.newsSource}
+                onChange={(event) => handleFormFieldChange("newsSource", event.target.value)}
+              />
+            </div>
+
+            <div className="form-field">
+              <label htmlFor="categoryId">Danh muc</label>
+              <select
+                id="categoryId"
+                value={formData.categoryId}
+                onChange={(event) => handleFormFieldChange("categoryId", event.target.value)}
+                required
+              >
+                <option value="">-- Chon danh muc --</option>
+                {categories.map((category) => (
+                  <option key={category.categoryId} value={category.categoryId}>
+                    {category.categoryName}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-field">
+              <label htmlFor="newsStatus">Trang thai</label>
+              <select
+                id="newsStatus"
+                value={formData.newsStatus}
+                onChange={(event) => handleFormFieldChange("newsStatus", event.target.value)}
+              >
+                <option value="true">Hoat dong (hien thi cong khai)</option>
+                <option value="false">Ngung hoat dong</option>
+              </select>
+            </div>
+
+            <div className="form-field">
+              <label htmlFor="tagNamesText">Tag (cach nhau boi dau phay)</label>
+              <input
+                id="tagNamesText"
+                type="text"
+                list="existing-tag-names"
+                placeholder="Vi du: The thao, Bong da"
+                value={formData.tagNamesText}
+                onChange={(event) => handleFormFieldChange("tagNamesText", event.target.value)}
+              />
+              <datalist id="existing-tag-names">
+                {existingTagNames.map((tagName) => (
+                  <option key={tagName} value={tagName} />
+                ))}
+              </datalist>
+            </div>
+
+            <div className="modal-footer">
+              <button type="button" className="button button-secondary" onClick={closeModal}>
+                Huy
+              </button>
+              <button type="submit" className="button button-primary" disabled={isSaving}>
+                {isSaving ? "Dang luu..." : "Luu"}
+              </button>
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      {deleteTargetId !== null && (
+        <ConfirmDialog
+          message="Ban co chac muon xoa bai viet nay?"
+          onConfirm={handleConfirmDelete}
+          onCancel={() => setDeleteTargetId(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+export default StaffNewsPage;
